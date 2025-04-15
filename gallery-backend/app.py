@@ -4,14 +4,9 @@ import aws_cdk as cdk
 
 from stacks.byoc.facechain_ecr_stack import ByocFaceChainEcrStack
 from stacks.byoc.facechain_codebuild_stack import ByocFaceChainCodeBuildStack
-from stacks.byoc.gfpgan_codebuild_stack import ByocGfpganCodeBuildStack
-from stacks.byoc.gfpgan_ecr_stack import ByocGfpganEcrStack
 from stacks.facechain.codebuild_trigger_stack import FaceChainCodeBuildTriggerStack
 from stacks.facechain.codebuild_status_checker_stack import FaceChainCodeBuildStatusCheckerStack
 from stacks.facechain.sagemaker_endpoint_stack import FaceChainSageMakerEndpointStack
-from stacks.gfpgan.codebuild_trigger_stack import GfpganCodeBuildTriggerStack
-from stacks.gfpgan.codebuild_status_checker_stack import GfpganCodeBuildStatusCheckerStack
-from stacks.gfpgan.sagemaker_endpoint_stack import GfpganSageMakerEndpointStack
 from stacks.ddb.tables import DDBTables
 from stacks.s3.bucket import S3Bucket
 from stacks.apigateway.apis import ApiGatewayApisStack
@@ -23,8 +18,6 @@ app = cdk.App()
 # Byoc Stacks
 facechain_ecr_stack = ByocFaceChainEcrStack(app, "ByocFaceChainEcrStack")
 facechain_codebuild_stack = ByocFaceChainCodeBuildStack(app, "ByocFaceChainCodeBuildStack", facechain_ecr_stack.repository)
-gfpgan_ecr_stack = ByocGfpganEcrStack(app, "ByocGfpganEcrStack")
-gfpgan_codebuild_stack = ByocGfpganCodeBuildStack(app, "ByocGfpganCodeBuildStack", gfpgan_ecr_stack.repository)
 
 # FaceChain Stacks
 facechain_codebuild_trigger_stack = FaceChainCodeBuildTriggerStack(app, "FaceChainCodeBuildTriggerStack", facechain_codebuild_stack.project.project_name)
@@ -35,16 +28,6 @@ facechain_codebuild_status_checker_stack = FaceChainCodeBuildStatusCheckerStack(
 facechain_sagemaker_endpoint_stack = FaceChainSageMakerEndpointStack(app, "FaceChainSageMakerEndpointStack",
                                                   facechain_image_uri=f"{facechain_ecr_stack.repository.repository_uri}:latest",
                                                   codebuild_status_resource=facechain_codebuild_status_checker_stack.status_resource)
-
-# Gfpgan Stacks 
-gfpgan_codebuild_trigger_stack = GfpganCodeBuildTriggerStack(app, "GfpganCodeBuildTriggerStack", gfpgan_codebuild_stack.project.project_name)
-gfpgan_codebuild_status_checker_stack = GfpganCodeBuildStatusCheckerStack(app, "GfpganCodeBuildStatusCheckerStack",
-                                                     codebuild_projects=[
-                                                         gfpgan_codebuild_stack.project.project_name
-                                                     ])
-gfpgan_sagemaker_endpoint_stack = GfpganSageMakerEndpointStack(app, "GfpganSageMakerEndpointStack",
-                                                  gfpgan_image_uri=f"{gfpgan_ecr_stack.repository.repository_uri}:latest",
-                                                  codebuild_status_resource=gfpgan_codebuild_status_checker_stack.status_resource)
 
 # DDB Stacks
 ddb_tables = DDBTables(app, "DDBTables")

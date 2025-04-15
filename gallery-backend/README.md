@@ -1,6 +1,27 @@
 # Gallery Backend
 
-This project uses AWS CDK to construct the gallery backend infrastructure.
+This project uses AWS CDK to construct the gallery backend infrastructure for an image processing application.
+
+## Project Structure
+
+```
+.
+├── app.py                  # Main CDK application entry point
+├── byoc                    # Bring Your Own Container resources
+│   └── facechain           # FaceChain model container resources
+├── lambda                  # Lambda function source code
+│   ├── apis                # API handler functions
+│   ├── facechain_codebuild # FaceChain build functions
+│   └── image-processing    # Image processing functions
+└── stacks                  # CDK stack definitions
+    ├── apigateway          # API Gateway stack
+    ├── byoc                # BYOC stack
+    ├── cognito             # Cognito user authentication stack
+    ├── ddb                 # DynamoDB tables stack
+    ├── facechain           # FaceChain model stack
+    ├── lambdas             # Lambda functions stack
+    └── s3                  # S3 bucket stack
+```
 
 ## Stacks
 
@@ -11,8 +32,6 @@ The project consists of the following stacks:
 - Key components:
   - FaceChain ECR Stack: Container registry for FaceChain model
   - FaceChain CodeBuild Stack: Build pipeline for FaceChain container
-  - GFPGAN ECR Stack: Container registry for GFPGAN model
-  - GFPGAN CodeBuild Stack: Build pipeline for GFPGAN container
 
 ### 2. FaceChain Stacks
 - Infrastructure for FaceChain model deployment and management
@@ -21,14 +40,7 @@ The project consists of the following stacks:
   - CodeBuild Trigger Stack: Automated build triggers
   - CodeBuild Status Checker Stack: Build status monitoring
 
-### 3. GFPGAN Stacks
-- Infrastructure for GFPGAN model deployment and management
-- Key components:
-  - SageMaker Endpoint Stack: Model deployment endpoint
-  - CodeBuild Trigger Stack: Automated build triggers
-  - CodeBuild Status Checker Stack: Build status monitoring
-
-### 4. API Gateway Stacks
+### 3. API Gateway Stacks
 - REST API endpoint management and configuration
 - Key components:
   - Image Upload API (/apis/images/upload)
@@ -37,14 +49,14 @@ The project consists of the following stacks:
   - CORS configuration and permission management
   - Lambda integration
 
-### 5. Cognito Stacks
+### 4. Cognito Stacks
 - User authentication and authorization management
 - Key components:
   - User Pool configuration
   - Client application settings
   - Domain configuration
 
-### 6. DynamoDB Stacks
+### 5. DynamoDB Stacks
 - Data storage management
 - Key tables:
   - Process Table: Image processing status management
@@ -53,7 +65,7 @@ The project consists of the following stacks:
   - Base Resource Table: Base resource information storage
   - User Agreement Table: User consent information management
 
-### 7. Lambda Stacks
+### 6. Lambda Stacks
 - Serverless function management
 - Key functions:
   - Image Processing Lambdas:
@@ -62,13 +74,26 @@ The project consists of the following stacks:
     - Face Swap Completion Lambda: Face swap completion handling
   - S3 event-based automated processing configuration
 
-### 8. S3 Stacks
+### 7. S3 Stacks
 - Object storage management
 - Key features:
   - Image storage configuration
   - CORS settings
   - Bucket policy management
   - Event notification setup
+
+## Deployment Prerequisites
+
+Before deploying this application:
+
+1. Configure the `s3_base_bucket_name` in your `cdk.context.json` file:
+   ```json
+   {
+     "s3_base_bucket_name": "your-unique-bucket-name"
+   }
+   ```
+
+2. It is recommended to deploy this application in the **us-west-2** region for optimal performance and compatibility.
 
 ## Useful commands
 
@@ -80,11 +105,7 @@ The project consists of the following stacks:
 
 ## How to deploy
 
-This is a blank project for CDK development with Python.
-
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
-
-This project is set up like a standard Python project.  The initialization
+This project is set up like a standard Python project. The initialization
 process also creates a virtualenv within this project, stored under the `.venv`
 directory.  To create the virtualenv it assumes that there is a `python3`
 (or `python` for Windows) executable in your path with access to the `venv`
@@ -125,5 +146,3 @@ $ cdk synth
 To add additional dependencies, for example other CDK libraries, just add
 them to your `setup.py` file and rerun the `pip install -r requirements.txt`
 command.
-
-Enjoy!
