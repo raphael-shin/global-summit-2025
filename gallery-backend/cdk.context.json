@@ -1,0 +1,21 @@
+{
+  "ddb_amazon_bedrock_gallery_process_table_name": "ddb-amazon-bedrock-gallery-process",
+  "ddb_amazon_bedrock_gallery_display_table_name": "ddb-amazon-bedrock-gallery-display",
+  "ddb_amazon_bedrock_gallery_display_history_table_name": "ddb-amazon-bedrock-gallery-display-history",
+  "ddb_amazon_bedrock_gallery_base_resource_table_name": "ddb-amazon-bedrock-gallery-base-resource",
+  "ddb_amazon_bedrock_user_agreement_table_name": "ddb-amazon-bedrock-user-agreement",
+  "facechain_sagemaker_endpoint_instance_count": 1,
+  "facechain_sagemaker_endpoint_instance_type": "ml.g4dn.xlarge",
+  "s3_base_bucket_name": "amazon-bedrock-gallery-global-<your-unique-id>",
+  "s3_base_images_path": "images/base-image/",
+  "s3_face_images_path": "images/face-image/",
+  "s3_face_cropped_images_path": "images/face-cropped/",
+  "s3_face_swapped_images_path": "images/face-swapped/",
+  "s3_result_images_path": "images/results/",
+  "pillow_layer_arn": "arn:aws:lambda:us-west-2:770693421928:layer:Klayers-p311-Pillow:7",
+  "numpy_layer_arn": "arn:aws:lambda:us-west-2:770693421928:layer:Klayers-p311-numpy:14",
+  "facechain_sagemaker_endpoint_name": "facechain-sagemaker-endpoint",
+  "cognito_user_pool_name": "AmazonBedrockGalleryUserPool",
+  "cognito_client_name": "AmazonBedrockGalleryClient",
+  "cognito_domain_prefix": "amazon-bedrock-gallery"
+}
