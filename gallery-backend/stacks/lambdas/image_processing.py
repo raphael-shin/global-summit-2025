@@ -28,7 +28,6 @@ class LambdaImageProcessingStack(Stack):
         self.s3_face_swapped_images_path = self.node.try_get_context("s3_face_swapped_images_path")
         self.s3_result_images_path = self.node.try_get_context("s3_result_images_path")
         self.facechain_sagemaker_endpoint_name = self.node.try_get_context("facechain_sagemaker_endpoint_name")
-        self.gfpgan_sagemaker_endpoint_name = self.node.try_get_context("gfpgan_sagemaker_endpoint_name")
 
         # Create the face crop Lambda function
         self.face_crop_lambda = self.create_face_crop_lambda()
@@ -103,7 +102,6 @@ class LambdaImageProcessingStack(Stack):
                 "BUCKET_NAME": self.s3_base_bucket_name,
                 "RESULT_OBJECT_PATH": self.s3_result_images_path,
                 "FACECHAIN_SAGEMAKER_ENDPOINT_NAME": self.facechain_sagemaker_endpoint_name,
-                "GFPGAN_SAGEMAKER_ENDPOINT_NAME": self.gfpgan_sagemaker_endpoint_name,
                 "DDB_AMAZON_BEDROCK_GALLERY_PROCESS_TABLE_NAME": self.ddb_amazon_bedrock_gallery_process_table_name
             },
             timeout=Duration.seconds(60),
@@ -124,8 +122,7 @@ class LambdaImageProcessingStack(Stack):
             effect=iam.Effect.ALLOW,
             actions=["sagemaker:InvokeEndpoint"],
             resources=[
-                f"arn:aws:sagemaker:{self.region}:{self.account}:endpoint/{self.facechain_sagemaker_endpoint_name}",
-                f"arn:aws:sagemaker:{self.region}:{self.account}:endpoint/{self.gfpgan_sagemaker_endpoint_name}"
+                f"arn:aws:sagemaker:{self.region}:{self.account}:endpoint/{self.facechain_sagemaker_endpoint_name}"
             ]
         ))
 
