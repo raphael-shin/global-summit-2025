@@ -20,17 +20,9 @@ class CognitoUserPoolStack(Stack):
             user_pool_name=self.user_pool_name,
             self_sign_up_enabled=True,
             sign_in_aliases=cognito.SignInAliases(
-                email=True,
                 username=True
             ),
-            auto_verify=cognito.AutoVerifiedAttrs(
-                email=True
-            ),
             standard_attributes=cognito.StandardAttributes(
-                email=cognito.StandardAttribute(
-                    required=True,
-                    mutable=True
-                ),
                 fullname=cognito.StandardAttribute(
                     required=False,
                     mutable=True

@@ -7,7 +7,7 @@ class AppConfig:
     # AWS Configuration
     BEDROCK_REGION: str = "us-east-1"  # Nova Canvas is only available in us-east-1
     DYNAMODB_REGION: str = "us-west-2"  # DynamoDB is in us-west-2
-    S3_BUCKET: str = 'amazon-bedrock-gallery-sydney-jungseob'
+    S3_BUCKET: str = 'amazon-bedrock-gallery-global-<your-unique-id>'
     S3_PREFIX: str = 'images/base-image/'
     DYNAMODB_TABLE: str = 'ddb-amazon-bedrock-gallery-base-resource'
     
