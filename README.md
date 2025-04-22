@@ -48,6 +48,83 @@ The image generator is a Python-based utility that leverages Amazon Bedrock to c
 
 This component allows the application to generate high-quality base images that can be used in the face swapping process.
 
+## Amazon Bedrock Model Access Setup
+
+Before using the image generator, you need to set up access to the required Amazon Bedrock models:
+
+### 1. Access AWS Bedrock Console
+
+1. Sign in to the AWS Bedrock console: https://console.aws.amazon.com/bedrock/
+2. Set the region to `us-east-1` (Nova Canvas model is only available in us-east-1)
+
+### 2. Request Model Access
+
+1. In the left navigation pane, under **Bedrock configurations**, choose **Model access**
+2. Choose **Modify model access**
+3. Select the following models:
+   - Anthropic Claude 3.5 Sonnet
+   - Amazon Nova Canvas
+4. Choose **Next**
+5. For Anthropic models, you must submit use case details
+6. Review and accept the terms, then choose **Submit**
+
+### 3. IAM Permissions Setup
+
+To request model access, your IAM role needs the following permissions:
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "aws-marketplace:Subscribe",
+                "aws-marketplace:Unsubscribe",
+                "aws-marketplace:ViewSubscriptions"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+```
+
+### 4. S3 Bucket Access Setup
+
+To allow the image generator to save images to S3, you need to configure proper IAM permissions:
+
+1. Go to AWS IAM Console: https://console.aws.amazon.com/iam/
+2. Create a new IAM policy with the following permissions:
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:PutObject",
+                "s3:GetObject",
+                "s3:ListBucket"
+            ],
+            "Resource": [
+                "arn:aws:s3:::amazon-bedrock-gallery-sydney-jungseob",
+                "arn:aws:s3:::amazon-bedrock-gallery-sydney-jungseob/*"
+            ]
+        }
+    ]
+}
+```
+
+3. Attach this policy to the IAM role/user that will be used to run the image generator
+4. Make sure the S3 bucket name in the policy matches your actual bucket name
+
+### Important Notes
+
+- Nova Canvas model is only available in `us-east-1` region
+- Model access approval may take several minutes
+- If model access is denied, contact AWS support or choose alternative models
+
 ## Deployment Instructions
 
 Follow these steps to deploy the complete application:
@@ -61,6 +138,11 @@ cd gallery-backend
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
+
+# Generate unique ID and update cdk.context.json
+UNIQUE_ID=$(openssl rand -hex 4)
+sed -i '' "s/<your-unique-id>/$UNIQUE_ID/g" cdk.context.json
+
 cdk synth
 cdk deploy --all
 ```

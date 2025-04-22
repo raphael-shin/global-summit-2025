@@ -34,9 +34,41 @@ npm install
 ```env
 REACT_APP_API_ENDPOINT=https://<your-api-gateway-id>.execute-api.<region>.amazonaws.com/prod/apis
 REACT_APP_USER_AGREEMENT_ENDPOINT=https://<your-user-agreement-api-id>.execute-api.<region>.amazonaws.com/prod
+REACT_APP_COGNITO_USER_POOL_ID=<your-user-pool-id>
+REACT_APP_COGNITO_CLIENT_ID=<your-client-id>
+
+Replace the placeholders with the actual endpoints and user pool related information from your backend deployment:
+
+To set main API Gateway endpoint in the .env file:
+
+1. Go to AWS API Gateway Console and select 'APIs' from the left navigation menu
+2. In the API list, search for 'AmazonBedrockGalleryApiGatewayStack'
+3. Select the API and find the endpoint URL in the 'API endpoint' section
+4. Copy the https://<your-api-gateway-id>.execute-api.<region>.amazonaws.com part from this URL and set it as REACT_APP_API_ENDPOINT
+5. Add '/prod/apis' to the end of the URL
+
+To set User Agreement API Gateway endpoint in the .env file:
+
+1. Go to AWS API Gateway Console and select 'APIs' from the left navigation menu
+2. In the API list, search for 'AmazonBedrockGalleryUserAgreementApi'
+3. Select the API and find the endpoint URL in the 'API endpoint' section
+4. Copy the https://<your-user-agreement-api-id>.execute-api.<region>.amazonaws.com part from this URL and set it as REACT_APP_USER_AGREEMENT_ENDPOINT
+5. Add '/prod' to the end of the URL
+
+For both endpoints, replace <region> with your AWS region (e.g., us-west-2)
 ```
 
-Replace the placeholders with the actual endpoints from your backend deployment:
+To set Cognito values in the .env file:
+
+1. Go to AWS Cognito Console and select 'User Pools' from the left navigation menu
+2. In the user pool list, search for 'AmazonBedrockGalleryUserPool'
+3. Once found, copy the Pool ID from the 'User pool overview' section and set it as `REACT_APP_COGNITO_USER_POOL_ID`
+4. Navigate to the 'App integration' tab in the left menu
+5. Scroll down to the 'App clients and analytics' section
+6. Find 'AmazonBedrockGalleryClient' in the app clients list
+7. Copy the Client ID and set it as `REACT_APP_COGNITO_CLIENT_ID`
+
+백엔드 배포에서 실제 엔드포인트로 다른 플레이스홀더를 교체하세요:
 - `<your-api-gateway-id>`: The ID of your main API Gateway
 - `<your-user-agreement-api-id>`: The ID of your User Agreement API Gateway
 - `<region>`: Your AWS region (e.g., us-west-2)

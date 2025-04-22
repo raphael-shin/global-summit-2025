@@ -88,6 +88,7 @@ class ImageGenerator:
                 body=json.dumps(native_request)
             )
             model_response = json.loads(response["body"].read())
+            
             return model_response["content"][0]["text"]
         except Exception as e:
             raise ImageGeneratorError(f"Failed to generate Claude prompt: {e}")
